@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -33,14 +35,24 @@ import static com.android.volley.Request.Method.*;
 public class MainActivity extends AppCompatActivity {
 
     Button pinBtn, distBtn, btnSearchPin, btnSearchDist;
-    EditText pinSearch, distSearch1, distSearch2;
+    EditText pinSearch;
     LinearLayout pinSearchLayout;
     RelativeLayout distSearchLayout;
+    Spinner distSearch1, distSearch2;
+
+
+    ArrayList<StateModel> stateModelArrayList = new ArrayList<StateModel>();
+    ArrayList<String> names = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        distSearch1 = findViewById(R.id.distSearch1);
+
+        VaccineDataService vaccineDataService = new VaccineDataService(MainActivity.this);
+        vaccineDataService.getStates(stateModelArrayList, names, distSearch1);
 
 //assign values to each control of layout
         pinBtn = findViewById(R.id.pinBtn);
@@ -79,32 +91,11 @@ public class MainActivity extends AppCompatActivity {
         btnSearchPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Instantiate the RequestQueue.
-//                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-
-                String url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pinSearch.getText()+"&date="+formattedDate;
-
-                JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "Something wrong", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                MySingleton.getInstance(MainActivity.this).addToRequestQueue(request);
+                VaccineDataService vaccineDataService = new VaccineDataService(MainActivity.this);
+                vaccineDataService.getVaccineByPIN(pinSearch.getText().toString(), formattedDate);
             }
+
         });
 
-        btnSearchDist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
     }
 }

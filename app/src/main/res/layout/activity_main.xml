@@ -52,7 +52,7 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/checkVacci"
         app:layout_constraintVertical_bias="0.265">
 
-        <EditText
+        <Spinner
             android:id="@+id/distSearch1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             android:hint="Enter your State"
             android:inputType="number" />
 
-        <EditText
+        <Spinner
             android:id="@+id/distSearch2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
