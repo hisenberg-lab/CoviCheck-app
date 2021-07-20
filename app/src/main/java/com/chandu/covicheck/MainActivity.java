@@ -14,8 +14,16 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import static com.android.volley.Request.Method.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,25 +70,41 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Instantiate the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                String url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=560076&date=20-07-2021";
 
-// Request a string response from the provided URL.
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // Display the first 500 characters of the response string.
-                                Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
-                            }
-                        }, new Response.ErrorListener() {
+                queue.start();
+
+                String url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=560083&date=20-07-2021";
+
+                JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this,"Error occured",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Something wrong", Toast.LENGTH_SHORT).show();
                     }
                 });
 
+                queue.add(request);
+// Request a string response from the provided URL.
+//                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                        new Response.Listener<String>() {
+//                            @Override
+//                            public void onResponse(String response) {
+//                                // Display the first 500 characters of the response string.
+//                                Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
+//                            }
+//                        }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(MainActivity.this,"Error occured",Toast.LENGTH_LONG).show();
+//                    }
+//                });
+
 // Add the request to the RequestQueue.
-                queue.add(stringRequest);
+//                queue.add(stringRequest);
             }
         });
 
