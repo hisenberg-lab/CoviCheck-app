@@ -65,7 +65,8 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Enter your PIN"
-            android:inputType="number" />
+            android:inputType="number"
+            android:maxLength="6" />
 
         <Button
             android:id="@+id/btnSearchPin"
