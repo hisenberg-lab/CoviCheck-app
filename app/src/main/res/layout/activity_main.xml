@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Check Your Nearest Vaccination Center And Slots Availability"
         android:textAlignment="center"
-        android:textSize="34sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.547"
@@ -25,28 +25,34 @@
         android:id="@+id/pinBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="5dp"
         android:text="Search by Pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnDist"
+        app:layout_constraintHorizontal_bias="0.846"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkVacci" />
+        app:layout_constraintTop_toBottomOf="@+id/checkVacci"
+        app:layout_constraintVertical_bias="0.045" />
 
     <Button
         android:id="@+id/btnDist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
         android:text="Search by District"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
-        app:layout_constraintStart_toEndOf="@+id/pinBtn"
-        app:layout_constraintTop_toBottomOf="@+id/checkVacci" />
+        app:layout_constraintTop_toBottomOf="@+id/checkVacci"
+        app:layout_constraintVertical_bias="0.045" />
 
     <LinearLayout
         android:id="@+id/linearPin"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -86,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Enter your PIN"
+            android:hint="Enter your State"
             android:inputType="number" />
 
         <EditText
@@ -96,7 +103,7 @@
             android:layout_toRightOf="@+id/distSearch1"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Enter your PIN"
+            android:hint="Enter your District"
             android:inputType="number" />
 
         <Button
