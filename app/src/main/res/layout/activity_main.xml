@@ -52,7 +52,7 @@
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,9 +60,11 @@
 
         <EditText
             android:id="@+id/pinSearch"
-            android:layout_width="100dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginEnd="20sp"
+            android:layout_marginStart="30sp"
             android:ems="10"
             android:hint="Enter your PIN"
             android:inputType="number"
@@ -70,8 +72,9 @@
 
         <Button
             android:id="@+id/btnSearchPin"
-            android:layout_width="20dp"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="30sp"
             android:layout_weight="1"
             android:text="Search" />
     </LinearLayout>

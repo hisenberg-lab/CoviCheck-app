@@ -3,6 +3,7 @@ package com.chandu.covicheck;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,10 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static com.android.volley.Request.Method.*;
 
@@ -43,10 +48,16 @@ public class MainActivity extends AppCompatActivity {
         btnSearchPin = findViewById(R.id.btnSearchPin);
         btnSearchDist = findViewById(R.id.btnSearchDist);
 
-
+        pinSearch = findViewById(R.id.pinSearch);
 
         pinSearchLayout = findViewById(R.id.linearPin);
         distSearchLayout = findViewById(R.id.realtiveDist);
+
+//get current date
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = df.format(date);
+        Log.d("MainActivity",formattedDate);
 
 //click listeners for each button
         pinBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,11 +80,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Instantiate the RequestQueue.
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+//                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
 
-                queue.start();
-
-                String url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=560083&date=20-07-2021";
+                String url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pinSearch.getText()+"&date="+formattedDate;
 
                 JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -87,24 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                queue.add(request);
-// Request a string response from the provided URL.
-//                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                        new Response.Listener<String>() {
-//                            @Override
-//                            public void onResponse(String response) {
-//                                // Display the first 500 characters of the response string.
-//                                Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(MainActivity.this,"Error occured",Toast.LENGTH_LONG).show();
-//                    }
-//                });
-
-// Add the request to the RequestQueue.
-//                queue.add(stringRequest);
+                MySingleton.getInstance(MainActivity.this).addToRequestQueue(request);
             }
         });
 
