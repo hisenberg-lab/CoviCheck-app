@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout distSearchLayout;
     Spinner distSearch1, distSearch2;
     ListView lv_slots;
+    ProgressBar progress;
 
 
     ArrayList<StateDistModel> stateModelArrayList = new ArrayList<StateDistModel>();
@@ -76,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
         distSearch2 = findViewById(R.id.distSearch2);
 
         lv_slots = findViewById(R.id.lv_slots);
+
+        progress = findViewById(R.id.progress);
+
+        getSupportActionBar().hide();
+
 
 //get current date
         Date date = Calendar.getInstance().getTime();
@@ -114,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         btnSearchPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progress.setVisibility(view.VISIBLE);
                 VaccineDataService vaccineDataService = new VaccineDataService(MainActivity.this);
                 vaccineDataService.getVaccineByPIN(pinSearch.getText().toString(), formattedDate, new VaccineDataService.VaccineByPIN() {
                     @Override
@@ -129,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
                         ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
                         lv_slots.setAdapter((arrayAdapter));
+                        progress.setVisibility(view.GONE);
                         pinSearchLayout.setVisibility(view.GONE);
                         lv_slots.setVisibility(view.VISIBLE);
 
@@ -142,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "District"+String.valueOf(districtModelArrayList.get(distSearch2.getSelectedItemPosition()).getID()));
+                progress.setVisibility(view.VISIBLE);
                 VaccineDataService vaccineDataService = new VaccineDataService(MainActivity.this);
                 vaccineDataService.getVaccineByDist(districtModelArrayList.get(distSearch2.getSelectedItemPosition()).getID(), formattedDate, new VaccineDataService.VaccineByDist() {
                     @Override
@@ -154,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                         ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
                         lv_slots.setAdapter((arrayAdapter));
                         distSearchLayout.setVisibility(view.GONE);
+                        progress.setVisibility(view.GONE);
                         lv_slots.setVisibility(view.VISIBLE);
                     }
                 });
