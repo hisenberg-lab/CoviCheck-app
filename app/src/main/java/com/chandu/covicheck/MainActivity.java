@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         progress = findViewById(R.id.progress);
 
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
 
 //get current date
