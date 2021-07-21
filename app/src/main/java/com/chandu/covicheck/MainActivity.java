@@ -107,7 +107,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 VaccineDataService vaccineDataService = new VaccineDataService(MainActivity.this);
-                vaccineDataService.getVaccineByPIN(pinSearch.getText().toString(), formattedDate);
+                vaccineDataService.getVaccineByPIN(pinSearch.getText().toString(), formattedDate, new VaccineDataService.VaccineByPIN() {
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(MainActivity.this, "Something wrong",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(VaccineSlotModel vaccineSlotModel) {
+                        Toast.makeText(MainActivity.this, vaccineSlotModel.toString(),Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
         });

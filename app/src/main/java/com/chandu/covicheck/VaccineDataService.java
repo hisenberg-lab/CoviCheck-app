@@ -29,7 +29,13 @@ public class VaccineDataService {
         this.context = context;
     }
 
-    public void getVaccineByPIN(String pinSearch, String formattedDate) {
+
+    public interface VaccineByPIN {
+        void onError(String message);
+
+        void onResponse(VaccineSlotModel vaccineSlotModel);
+    }
+    public void getVaccineByPIN(String pinSearch, String formattedDate, VaccineByPIN vaccineByPIN) {
 
         // Instantiate the RequestQueue.
 //                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
@@ -41,47 +47,47 @@ public class VaccineDataService {
         JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
                 try {
                     JSONArray sessions_list = response.getJSONArray("sessions");
 
 //  get items in list
-                    VaccineSlotModel first_center = new VaccineSlotModel();
-                    private int center_id;
-                    private String name;
-                    private String address;
-                    private String state_name;
-                    private String district_name;
-                    private String block_name;
-                    private int pincode;
-                    private String from;
-                    private String to;
-                    private int lat;
-                    private int longi;
-                    private String fee_type;
-                    private String session_id;
-                    private String date;
-                    private int available_capacity;
-                    private int available_capacity_dose1;
-                    private int available_capacity_dose2;
-                    private String fee;
-                    private int min_age_limit;
-                    private int max_age_limit;
-                    private String allow_all_age;
-                    private String vaccine;
-                    private List<String> slots;
+                    VaccineSlotModel single_center = new VaccineSlotModel();
 
-                    JSONObject first_center_from_api = (JSONObject) sessions_list.get(0);
-                    first_center.setCenter_id(Integer.parseInt(first_center_from_api.getString("center_id")));
-                    first_center.setName(first_center_from_api.getString("state_name"));
-                    first_center.setDistrict_name(first_center_from_api.getString("district_name"));
-                    first_center.setBlock_name(first_center_from_api.getString("block_name"));
-                    first_center.setPincode(Integer.parseInt(first_center_from_api.getString("pincode")));
-                    first_center.setFrom(first_center_from_api.getString("from"));
-                    first_center.setTo(first_center_from_api.getString("to"));
-                    first_center.setLat(Integer.parseInt(first_center_from_api.getString("lat")));
-                    first_center.setLongi(Integer.parseInt(first_center_from_api.getString("long")));
-                    first_center.setFee_type(first_center_from_api.getString("fee_type"));
+                    JSONObject single_center_from_api = (JSONObject) sessions_list.get(0);
+
+                    single_center.setCenter_id(Integer.parseInt(single_center_from_api.getString("center_id")));
+                    single_center.setName(single_center_from_api.getString("state_name"));
+                    single_center.setDistrict_name(single_center_from_api.getString("district_name"));
+                    single_center.setBlock_name(single_center_from_api.getString("block_name"));
+                    single_center.setPincode(Integer.parseInt(single_center_from_api.getString("pincode")));
+                    single_center.setFrom(single_center_from_api.getString("from"));
+                    single_center.setTo(single_center_from_api.getString("to"));
+                    single_center.setLat(Integer.parseInt(single_center_from_api.getString("lat")));
+                    single_center.setLongi(Integer.parseInt(single_center_from_api.getString("long")));
+                    single_center.setFee_type(single_center_from_api.getString("fee_type"));
+                    single_center.setSession_id(single_center_from_api.getString("session_id"));
+                    single_center.setDate(single_center_from_api.getString("date"));
+                    single_center.setAvailable_capacity(Integer.parseInt(single_center_from_api.getString("available_capacity")));
+                    single_center.setAvailable_capacity_dose1(Integer.parseInt(single_center_from_api.getString("available_capacity_dose1")));
+                    single_center.setAvailable_capacity_dose2(Integer.parseInt(single_center_from_api.getString("available_capacity_dose2")));
+                    if(!single_center_from_api.isNull("fee")) {
+                        single_center.setFee(single_center_from_api.getString("fee"));
+                    }
+                    if(!single_center_from_api.isNull("min_age_limit")) {
+                        single_center.setMin_age_limit(Integer.parseInt(single_center_from_api.getString("min_age_limit")));
+                    }
+                    if(!single_center_from_api.isNull("max_age_limit")){
+                        single_center.setMax_age_limit(Integer.parseInt(single_center_from_api.getString("max_age_limit")));
+                    }
+                    if(!single_center_from_api.isNull("allow_all_age")) {
+                        single_center.setAllow_all_age(single_center_from_api.getString("allow_all_age"));
+                    }
+                    single_center.setVaccine(single_center_from_api.getString("vaccine"));
+//                    if(!single_center_from_api.isNull("slot")) {
+//                        first_center.setSlots(single_center_from_api.getJSONObject("slots"));
+//                    }
+                    vaccineByPIN.onResponse(single_center);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
