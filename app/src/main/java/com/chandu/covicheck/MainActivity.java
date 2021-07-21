@@ -143,7 +143,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "District"+String.valueOf(districtModelArrayList.get(distSearch2.getSelectedItemPosition()).getID()));
                 VaccineDataService vaccineDataService = new VaccineDataService(MainActivity.this);
-                vaccineDataService.getVaccineByDist(districtModelArrayList.get(distSearch2.getSelectedItemPosition()).getID(), formattedDate);
+                vaccineDataService.getVaccineByDist(districtModelArrayList.get(distSearch2.getSelectedItemPosition()).getID(), formattedDate, new VaccineDataService.VaccineByDist() {
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(MainActivity.this, "Something wrong",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(List<VaccineSlotModel> vaccineSlotModels) {
+                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
+                        lv_slots.setAdapter((arrayAdapter));
+                        distSearchLayout.setVisibility(view.GONE);
+                        lv_slots.setVisibility(view.VISIBLE);
+                    }
+                });
             }
         });
 
