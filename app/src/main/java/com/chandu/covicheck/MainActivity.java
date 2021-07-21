@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.android.volley.Request.Method.*;
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout pinSearchLayout;
     RelativeLayout distSearchLayout;
     Spinner distSearch1, distSearch2;
+    ListView lv_slots;
 
 
     ArrayList<StateDistModel> stateModelArrayList = new ArrayList<StateDistModel>();
@@ -71,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
         distSearch1 = findViewById(R.id.distSearch1);
         distSearch2 = findViewById(R.id.distSearch2);
 
+        lv_slots = findViewById(R.id.lv_slots);
+
 //get current date
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -85,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         pinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                lv_slots.setVisibility(view.GONE);
                 pinBtn.setAlpha(0.7f);
                 distBtn.setAlpha(1.0f);
                 pinSearchLayout.setVisibility(view.VISIBLE);
@@ -96,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         distBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                lv_slots.setVisibility(view.GONE);
                 distBtn.setAlpha(0.7f);
                 pinBtn.setAlpha(1.0f);
                 distSearchLayout.setVisibility(view.VISIBLE);
@@ -114,8 +122,16 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onResponse(VaccineSlotModel vaccineSlotModel) {
-                        Toast.makeText(MainActivity.this, vaccineSlotModel.toString(),Toast.LENGTH_SHORT).show();
+                    public void onResponse(List<VaccineSlotModel> vaccineSlotModels) {
+//                        Toast.makeText(MainActivity.this, vaccineSlotModels.toString(),Toast.LENGTH_SHORT).show();
+
+//  put the list into listview
+
+                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
+                        lv_slots.setAdapter((arrayAdapter));
+                        pinSearchLayout.setVisibility(view.GONE);
+                        lv_slots.setVisibility(view.VISIBLE);
+
                     }
                 });
             }

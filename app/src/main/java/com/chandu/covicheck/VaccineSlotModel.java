@@ -61,31 +61,18 @@ public class VaccineSlotModel {
 
     @Override
     public String toString() {
-        return "VaccineSlotModel{" +
-                "center_id=" + center_id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", state_name='" + state_name + '\'' +
-                ", district_name='" + district_name + '\'' +
-                ", block_name='" + block_name + '\'' +
-                ", pincode='" + pincode + '\'' +
-                ", from='" + from + '\'' +
-                ", to='" + to + '\'' +
-                ", lat='" + lat + '\'' +
-                ", longi='" + longi + '\'' +
-                ", fee_type='" + fee_type + '\'' +
-                ", session_id='" + session_id + '\'' +
-                ", date='" + date + '\'' +
-                ", available_capacity='" + available_capacity + '\'' +
-                ", available_capacity_dose1='" + available_capacity_dose1 + '\'' +
-                ", available_capacity_dose2='" + available_capacity_dose2 + '\'' +
-                ", fee='" + fee + '\'' +
-                ", min_age_limit='" + min_age_limit + '\'' +
-                ", max_age_limit='" + max_age_limit + '\'' +
-                ", allow_all_age='" + allow_all_age + '\'' +
-                ", vaccine='" + vaccine + '\'' +
-                ", slots=" + slots +
-                '}';
+        return  name + '\n' +
+                address + ", " +
+                block_name + ", " +
+                district_name + ", " +
+                state_name + ", " +
+                pincode + '\n' + "                          "+
+                date + "  " +"Rs " + fee + "/-" + "\n"+"       "+
+                vaccine + "  "+
+                "[ D1: " + available_capacity_dose1 + " ] [ " +
+                "T: " + available_capacity + " ] [ "+
+                "D2: " + available_capacity_dose2 + " ]\n" +"                                 "+
+                "Age  " + min_age_limit + '|' + max_age_limit+"\n";
     }
 
     public int getCenter_id() {
