@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.android.volley.Request.Method.GET;
 
@@ -24,16 +25,84 @@ public class VaccineDataService {
 
     Context context;
 
-    public VaccineDataService(Context context){
+    public VaccineDataService(Context context) {
         this.context = context;
     }
 
-    public void getVaccineByPIN(String pinSearch, String formattedDate){
+    public void getVaccineByPIN(String pinSearch, String formattedDate) {
 
         // Instantiate the RequestQueue.
 //                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
 
-        String url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pinSearch+"&date="+formattedDate;
+        List<VaccineSlotModel> slots = new ArrayList<>();
+
+        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=" + pinSearch + "&date=" + formattedDate;
+
+        JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
+                try {
+                    JSONArray sessions_list = response.getJSONArray("sessions");
+
+//  get items in list
+                    VaccineSlotModel first_center = new VaccineSlotModel();
+                    private int center_id;
+                    private String name;
+                    private String address;
+                    private String state_name;
+                    private String district_name;
+                    private String block_name;
+                    private int pincode;
+                    private String from;
+                    private String to;
+                    private int lat;
+                    private int longi;
+                    private String fee_type;
+                    private String session_id;
+                    private String date;
+                    private int available_capacity;
+                    private int available_capacity_dose1;
+                    private int available_capacity_dose2;
+                    private String fee;
+                    private int min_age_limit;
+                    private int max_age_limit;
+                    private String allow_all_age;
+                    private String vaccine;
+                    private List<String> slots;
+
+                    JSONObject first_center_from_api = (JSONObject) sessions_list.get(0);
+                    first_center.setCenter_id(Integer.parseInt(first_center_from_api.getString("center_id")));
+                    first_center.setName(first_center_from_api.getString("state_name"));
+                    first_center.setDistrict_name(first_center_from_api.getString("district_name"));
+                    first_center.setBlock_name(first_center_from_api.getString("block_name"));
+                    first_center.setPincode(Integer.parseInt(first_center_from_api.getString("pincode")));
+                    first_center.setFrom(first_center_from_api.getString("from"));
+                    first_center.setTo(first_center_from_api.getString("to"));
+                    first_center.setLat(Integer.parseInt(first_center_from_api.getString("lat")));
+                    first_center.setLongi(Integer.parseInt(first_center_from_api.getString("long")));
+                    first_center.setFee_type(first_center_from_api.getString("fee_type"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        MySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+    public void getVaccineByDist(int distSearch, String formattedDate) {
+
+        // Instantiate the RequestQueue.
+//                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+
+        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=" + distSearch + "&date=" + formattedDate;
 
         JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -50,30 +119,8 @@ public class VaccineDataService {
         MySingleton.getInstance(context).addToRequestQueue(request);
     }
 
-    public void getVaccineByDist(int distSearch, String formattedDate){
 
-        // Instantiate the RequestQueue.
-//                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-
-        String url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id="+distSearch+"&date="+formattedDate;
-
-        JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        MySingleton.getInstance(context).addToRequestQueue(request);
-    }
-
-
-    public void getStateDist(ArrayList<StateDistModel> stateDistrictModelArrayList, ArrayList<String> names, Spinner searchBtn,int dist){
+    public void getStateDist(ArrayList<StateDistModel> stateDistrictModelArrayList, ArrayList<String> names, Spinner searchBtn, int dist) {
 
         String url = "https://cdn-api.co-vin.in/api/v2/admin/location/states";
 
@@ -87,7 +134,7 @@ public class VaccineDataService {
 
                 JSONArray data = new JSONArray();
 
-                if(dist != 999){
+                if (dist != 999) {
                     try {
                         data = response.getJSONArray("districts");
                     } catch (JSONException e) {
@@ -121,13 +168,11 @@ public class VaccineDataService {
 
                         stateDistrictModelArrayList.add(stateModel);
                     }
-                    for (int i = 0; i< stateDistrictModelArrayList.size(); i++){
+                    for (int i = 0; i < stateDistrictModelArrayList.size(); i++) {
                         names.add(stateDistrictModelArrayList.get(i).getName().toString());
                     }
 
-                }
-                else
-                {
+                } else {
                     try {
                         data = response.getJSONArray("states");
                     } catch (JSONException e) {
@@ -162,7 +207,7 @@ public class VaccineDataService {
                         stateDistrictModelArrayList.add(stateModel);
                     }
 
-                    for (int i = 0; i< stateDistrictModelArrayList.size(); i++){
+                    for (int i = 0; i < stateDistrictModelArrayList.size(); i++) {
                         names.add(stateDistrictModelArrayList.get(i).getName().toString());
                     }
                 }
@@ -181,7 +226,30 @@ public class VaccineDataService {
 
         MySingleton.getInstance(context).addToRequestQueue(request);
 
-        }
     }
+}
+
+//
+//        public void getVaccineSlotsByPIN(String pinSearch, String formattedDate) {
+//
+//        List<VaccineSlotModel> slots = new ArrayList<>();
+//
+//            String url ="https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode="+pinSearch+"&date="+formattedDate;
+//
+//        JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        });
+//
+//            MySingleton.getInstance(context).addToRequestQueue(request);
+//
+//        }
 
 
