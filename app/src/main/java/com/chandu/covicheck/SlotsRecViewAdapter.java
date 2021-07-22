@@ -43,7 +43,14 @@ public class SlotsRecViewAdapter extends RecyclerView.Adapter<SlotsRecViewAdapte
             holder.doseTotal.setBackgroundResource(R.color.redBackground);
 
         }
-        holder.age.setText(String.valueOf(slots.get(position).getMin_age_limit())+" | "+String.valueOf(slots.get(position).getMax_age_limit()));
+        holder.age.setText(String.valueOf(slots.get(position).getMin_age_limit())+" - "+String.valueOf(slots.get(position).getMax_age_limit()));
+
+        if(slots.get(position).getMin_age_limit() == 0){
+            holder.age.setText(String.valueOf(slots.get(position).getMax_age_limit())+ " & Below");
+        }
+        else if(slots.get(position).getMax_age_limit() == 0){
+            holder.age.setText(String.valueOf(slots.get(position).getMin_age_limit())+ " & Above");
+        }
     }
 
     @Override

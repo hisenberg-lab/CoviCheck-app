@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 //  put the list into listview
 
 //                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
-//  custom adapter
+// recyclerView adapter
                         SlotsRecViewAdapter adapter = new SlotsRecViewAdapter();
                         adapter.setSlots(vaccineSlotModels);
 
@@ -196,9 +196,19 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(List<VaccineSlotModel> vaccineSlotModels) {
 //                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
 //                        lv_slots.setAdapter((arrayAdapter));
+                        SlotsRecViewAdapter adapter = new SlotsRecViewAdapter();
+                        adapter.setSlots(vaccineSlotModels);
+
                         distSearchLayout.setVisibility(view.GONE);
                         progress.setVisibility(view.GONE);
+
+                        rv_slots.setAdapter(adapter);
+                        rv_slots.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
                         rv_slots.setVisibility(view.VISIBLE);
+                        pinSearchLayout.setVisibility(view.GONE);
+
+
                     }
                 });
             }
