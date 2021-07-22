@@ -135,17 +135,16 @@
             android:text="Submit" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lv_slots"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_slots"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="192dp"
-        android:visibility="gone"
-        android:divider="@color/redBackground"
-        android:dividerHeight="1dp"
+        android:visibility="visible"
+        android:layout_centerHorizontal="true"
         app:layout_constraintTop_toBottomOf="@+id/checkVacci"
         tools:layout_editor_absoluteX="16dp">
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress"

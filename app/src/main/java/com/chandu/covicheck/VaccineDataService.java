@@ -105,6 +105,7 @@ public class VaccineDataService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, "Something wrong", Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
             }
         });
 
