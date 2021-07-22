@@ -2,10 +2,12 @@ package com.chandu.covicheck;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,6 +17,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner distSearch1, distSearch2;
     ListView lv_slots;
     ProgressBar progress;
-
+//    TextView noVaccine;
 
     ArrayList<StateDistModel> stateModelArrayList = new ArrayList<StateDistModel>();
     ArrayList<String> stateNames = new ArrayList<String>();
@@ -81,8 +84,12 @@ public class MainActivity extends AppCompatActivity {
         lv_slots = findViewById(R.id.lv_slots);
 
         progress = findViewById(R.id.progress);
+//        noVaccine = findViewById(R.id.noVaccine);
 
-//        getSupportActionBar().hide();
+        if(getSupportActionBar()!= null) {
+            getSupportActionBar().hide();
+        }
+
 
 
 //get current date
@@ -104,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 distBtn.setAlpha(1.0f);
                 pinSearchLayout.setVisibility(view.VISIBLE);
                 distSearchLayout.setVisibility(view.GONE);
-
             }
         });
 
@@ -123,6 +129,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progress.setVisibility(view.VISIBLE);
+
+//  hide keyboard
+                InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 VaccineDataService vaccineDataService = new VaccineDataService(MainActivity.this);
                 vaccineDataService.getVaccineByPIN(pinSearch.getText().toString(), formattedDate, new VaccineDataService.VaccineByPIN() {
                     @Override
@@ -137,10 +148,19 @@ public class MainActivity extends AppCompatActivity {
 //  put the list into listview
 
                         ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
-                        lv_slots.setAdapter((arrayAdapter));
                         progress.setVisibility(view.GONE);
-                        pinSearchLayout.setVisibility(view.GONE);
+                        lv_slots.setAdapter((arrayAdapter));
                         lv_slots.setVisibility(view.VISIBLE);
+                        pinSearchLayout.setVisibility(view.GONE);
+
+//                        if(arrayAdapter.isEmpty()){
+//
+//                        }
+//                        else {
+//                        lv_slots.setAdapter((arrayAdapter));
+//                        lv_slots.setVisibility(view.VISIBLE);
+//                        pinSearchLayout.setVisibility(view.GONE);inSearchLayout.setVisibility(view.GONE);
+//                        }
 
                     }
                 });
