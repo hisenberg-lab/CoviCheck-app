@@ -17,6 +17,8 @@
     <color name="pink_a200">#FF4081</color>
     <color name="deepOrange_a100">#FF9E80</color>
     <color name="blueGray_900">#263238</color>
+    <color name="cardBackground">#FE1D1D2F</color>
+
 
 
 </resources>
