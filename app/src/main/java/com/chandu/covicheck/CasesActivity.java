@@ -43,6 +43,13 @@ public class CasesActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
 //                isRefreshed = true;
+                textView_confirmed.setText("0");
+                textView_confirmed_new.setText("+0");
+                textView_active.setText("0");
+                textView_death.setText("0");
+                textView_death_new.setText("+0");
+                textView_recovered.setText("0");
+                textView_recovered_new.setText("+0");
                 updateData();
                 swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(CasesActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
