@@ -108,9 +108,12 @@
             android:layout_marginEnd="145dp"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/pink_a200"
             android:ems="10"
             android:hint="Enter your State"
-            android:inputType="number" />
+            android:inputType="number"
+            android:popupBackground="@color/pink_a700"
+            android:splitMotionEvents="false" />
 
         <Spinner
             android:id="@+id/distSearch2"
@@ -121,6 +124,8 @@
             android:layout_marginEnd="143dp"
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/teal_200"
+            android:popupBackground="@color/teal_700"
             android:ems="10"
             android:hint="Enter your District"
             android:inputType="number" />
