@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rv_slots;
     private ProgressBar progress;
 //    TextView noVaccine;
+    private FloatingActionButton fab;
 
     ArrayList<StateDistModel> stateModelArrayList = new ArrayList<StateDistModel>();
     ArrayList<String> stateNames = new ArrayList<String>();
@@ -90,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
         progress = findViewById(R.id.progress);
 //        noVaccine = findViewById(R.id.noVaccine);
+
+        fab = findViewById(R.id.fab);
 
         if(getSupportActionBar()!= null) {
             getSupportActionBar().hide();
@@ -231,6 +236,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, CasesActivity.class));
+            }
+        });
 
     }
 }
