@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class CasesActivity extends AppCompatActivity {
 
@@ -53,6 +54,7 @@ public class CasesActivity extends AppCompatActivity {
 
         pieChart = findViewById(R.id.pieChart_view);
 
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Covid-19 Status India");
 
 
         updateData();
