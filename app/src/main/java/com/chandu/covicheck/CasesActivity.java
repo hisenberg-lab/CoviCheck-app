@@ -3,19 +3,38 @@ package com.chandu.covicheck;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.graphics.Color;
+import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.MPPointF;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class CasesActivity extends AppCompatActivity {
 
     private TextView textView_confirmed, textView_confirmed_new, textView_active, textView_active_new, textView_recovered, textView_recovered_new, textView_death, textView_death_new, textView_date, textview_time;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private PieChart pieChart;
+    int active,confirmed,death;
+    int recovered;
+
+
 
 
     @Override
@@ -35,8 +54,14 @@ public class CasesActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.main_refreshLayout);
         textview_time = findViewById(R.id.time_textView);
 
+        pieChart = findViewById(R.id.pieChart_view);
+
+
+
 
         updateData();
+        initPieChart();
+        showPieChart();
 
 //  pull dowm to refresh
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -50,7 +75,9 @@ public class CasesActivity extends AppCompatActivity {
                 textView_death_new.setText("+0");
                 textView_recovered.setText("0");
                 textView_recovered_new.setText("+0");
+                initPieChart();
                 updateData();
+                showPieChart();
                 swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(CasesActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
             }
@@ -75,6 +102,12 @@ public class CasesActivity extends AppCompatActivity {
                 textView_death_new.setText("+"+statewiseModel.getDeltadeaths());
                 textView_recovered.setText(statewiseModel.getRecovered());
                 textView_recovered_new.setText("+"+statewiseModel.getDeltarecovered());
+
+                active = Integer.valueOf(statewiseModel.getActive());
+                confirmed = Integer.valueOf(statewiseModel.getConfirmed());
+                death = Integer.valueOf(statewiseModel.getDeaths());
+                recovered = Integer.valueOf(statewiseModel.getRecovered());
+
                 Date mDate = null;
                 try {
                     mDate = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US).parse(statewiseModel.getLastupdatedtime());
@@ -86,4 +119,77 @@ public class CasesActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void showPieChart(){
+
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+        String label = "Cases";
+
+        //initializing data
+        Map<String, Integer> typeAmountMap = new HashMap<>();
+        typeAmountMap.put("Confirmed",confirmed);
+        typeAmountMap.put("Active",active);
+        typeAmountMap.put("Death",death);
+//        typeAmountMap.put("Recovered",recovered);
+
+
+        //initializing colors for the entries
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(Color.parseColor("#0091EA"));//lightblue_a700
+
+        colors.add(Color.parseColor("#C60202"));//redBackground
+        colors.add(Color.parseColor("#FFAB00"));//replyOrange
+
+
+//        colors.add(Color.parseColor("#00C853"));//green_a700
+
+
+
+        //input data and fit data into pie chart entry
+        for(String type: typeAmountMap.keySet()){
+            pieEntries.add(new PieEntry(typeAmountMap.get(type).floatValue(), type));
+        }
+
+        //collecting the entries with label name
+        PieDataSet pieDataSet = new PieDataSet(pieEntries,label);
+        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
+        pieChart.setExtraOffsets(30.f, 5.f, 30.f, 5.f);
+        //setting text size of the value
+        pieDataSet.setValueTextSize(12f);
+        //providing color list for coloring different entries
+        pieDataSet.setColors(colors);
+        //grouping the data set from entry to chart
+        PieData pieData = new PieData(pieDataSet);
+        //showing the value of the entries, default true if not set
+        pieData.setDrawValues(true);
+
+        pieChart.setData(pieData);
+        pieChart.invalidate();
     }
+
+    private void initPieChart() {
+        //using percentage as values instead of amount
+        pieChart.setUsePercentValues(true);
+
+        //remove the description label on the lower left corner, default true if not set
+        pieChart.getDescription().setEnabled(false);
+        Description description = pieChart.getDescription();
+
+        //enabling the user to rotate the chart, default true
+        pieChart.setRotationEnabled(true);
+        //adding friction when rotating the pie chart
+        pieChart.setDragDecelerationFrictionCoef(0.9f);
+        //setting the first entry start from right hand side, default starting from top
+        pieChart.setRotationAngle(0);
+
+        //highlight the entry when it is tapped, default true if not set
+        pieChart.setHighlightPerTapEnabled(true);
+        //adding animation so the entries pop up from 0 degree
+        pieChart.animateY(1400, Easing.EasingOption.EaseOutBounce);
+//        pieChart.animateX(1400, Easing.EasingOption.EaseOutBounce);
+
+        //setting the color of the hole in the middle, default white
+        pieChart.setHoleColor(Color.parseColor("#FE1D1D2F"));
+    }
+}
