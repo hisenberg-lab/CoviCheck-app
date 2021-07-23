@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/cardBackground"
+    app:contentPaddingLeft="10sp"
+    app:contentPaddingRight="10sp"
+    app:contentPaddingTop="10sp"
+    app:contentPaddingBottom="10sp"
+    app:cardElevation="4sp"
+    app:cardCornerRadius="2sp"
+    android:layout_margin="3sp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="20sp"
+            android:textColor="@color/pink_a700"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/deepOrange_a100"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2sp"
+            android:layout_below="@+id/name"
+            android:text="Address"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="60sp"
+            android:layout_marginBottom="2sp"
+            android:layout_below="@+id/address">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/feeType"
+                android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:padding="@dimen/cardview_default_radius"
+                android:background="@color/teal_700"
+                android:layout_height="wrap_content"
+                android:text="Fee Type"
+                app:layout_constraintEnd_toStartOf="@+id/date"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:text="Date" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fee"
+                android:textColor="@color/white"
+                android:padding="@dimen/cardview_default_radius"
+                android:background="@color/teal_700"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Fee" />
+
+
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeVaccine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="80sp"
+        android:layout_marginBottom="2sp"
+        android:layout_below="@+id/relativeAddress">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/vaccine"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@color/lightBlue_a700"
+            android:textColor="@color/white"
+            android:padding="@dimen/cardview_default_radius"
+            android:layout_height="wrap_content"
+            android:text="Vaccine"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="25sp"
+            android:layout_toRightOf="@+id/vaccine">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/doseOne"
+                android:layout_width="wrap_content"
+                android:background="@color/lime_800"
+                android:textColor="@color/white"
+                android:padding="@dimen/cardview_default_radius"
+                android:layout_height="wrap_content"
+                android:text="D1" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/doseTotal"
+                android:layout_width="wrap_content"
+                android:background="@color/green_a700"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content"
+                android:text="Total" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/doseTwo"
+                android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:padding="@dimen/cardview_default_radius"
+
+                android:background="@color/lime_800"
+                android:layout_height="wrap_content"
+                android:text="D2" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:textColor="@color/redBackground"
+            android:layout_below="@+id/relativeVaccine"
+            android:text="Age"/>
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

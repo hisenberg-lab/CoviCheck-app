@@ -21,33 +21,37 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.025" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/pinBtn"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="5dp"
-        android:text="Search by Pin"
-        android:backgroundTint="@color/replyOrange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnDist"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkVacci"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="4dp"
-        android:text="Search by District"
-        android:backgroundTint="@color/replyOrange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="25sp"
+        android:layout_marginRight="25sp"
         app:layout_constraintTop_toBottomOf="@+id/checkVacci"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_centerHorizontal="true"
+        app:layout_constraintVertical_bias="0.011">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pinBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/replyOrange"
+
+            android:text="Search by Pin" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/replyOrange"
+            android:text="Search by District" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearPin"
@@ -135,17 +139,16 @@
             android:text="Submit" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/lv_slots"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_slots"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="192dp"
-        android:visibility="gone"
-        android:divider="@color/redBackground"
-        android:dividerHeight="1dp"
+        android:visibility="visible"
+        android:layout_centerHorizontal="true"
         app:layout_constraintTop_toBottomOf="@+id/checkVacci"
         tools:layout_editor_absoluteX="16dp">
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress"
@@ -161,7 +164,7 @@
         app:layout_constraintTop_toBottomOf="@+id/checkVacci"
         tools:ignore="MissingConstraints" />
 
-<!--    <com.google.android.material.textview.MaterialTextView-->
+    <!--    <com.google.android.material.textview.MaterialTextView-->
 <!--        android:id="@+id/noVaccine"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->

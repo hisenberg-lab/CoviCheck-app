@@ -1,6 +1,9 @@
 package com.chandu.covicheck;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -45,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
     final private String TAG = "MainActivity";
 
-    Button pinBtn, distBtn, btnSearchPin, btnSearchDist;
-    EditText pinSearch;
-    LinearLayout pinSearchLayout;
-    RelativeLayout distSearchLayout;
-    Spinner distSearch1, distSearch2;
-    ListView lv_slots;
-    ProgressBar progress;
+    private Button pinBtn, distBtn, btnSearchPin, btnSearchDist;
+    private EditText pinSearch;
+    private LinearLayout pinSearchLayout;
+    private RelativeLayout distSearchLayout;
+    private Spinner distSearch1, distSearch2;
+    private RecyclerView rv_slots;
+    private ProgressBar progress;
 //    TextView noVaccine;
 
     ArrayList<StateDistModel> stateModelArrayList = new ArrayList<StateDistModel>();
@@ -67,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
 //assign values to each control of layout
         pinBtn = findViewById(R.id.pinBtn);
         distBtn = findViewById(R.id.btnDist);
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         distSearch1 = findViewById(R.id.distSearch1);
         distSearch2 = findViewById(R.id.distSearch2);
 
-        lv_slots = findViewById(R.id.lv_slots);
+        rv_slots = findViewById(R.id.rv_slots);
 
         progress = findViewById(R.id.progress);
 //        noVaccine = findViewById(R.id.noVaccine);
@@ -106,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         pinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lv_slots.setVisibility(view.GONE);
+                rv_slots.setVisibility(view.GONE);
                 pinBtn.setAlpha(0.7f);
                 distBtn.setAlpha(1.0f);
                 pinSearchLayout.setVisibility(view.VISIBLE);
@@ -117,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         distBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                lv_slots.setVisibility(view.GONE);
+                rv_slots.setVisibility(view.GONE);
                 distBtn.setAlpha(0.7f);
                 pinBtn.setAlpha(1.0f);
                 distSearchLayout.setVisibility(view.VISIBLE);
@@ -147,10 +152,17 @@ public class MainActivity extends AppCompatActivity {
 
 //  put the list into listview
 
-                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
+//                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
+// recyclerView adapter
+                        SlotsRecViewAdapter adapter = new SlotsRecViewAdapter();
+                        adapter.setSlots(vaccineSlotModels);
+
                         progress.setVisibility(view.GONE);
-                        lv_slots.setAdapter((arrayAdapter));
-                        lv_slots.setVisibility(view.VISIBLE);
+//                        lv_slots.setAdapter((arrayAdapter));
+                        rv_slots.setAdapter(adapter);
+                        rv_slots.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+                        rv_slots.setVisibility(view.VISIBLE);
                         pinSearchLayout.setVisibility(view.GONE);
 
 //                        if(arrayAdapter.isEmpty()){
@@ -182,11 +194,21 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(List<VaccineSlotModel> vaccineSlotModels) {
-                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
-                        lv_slots.setAdapter((arrayAdapter));
+//                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
+//                        lv_slots.setAdapter((arrayAdapter));
+                        SlotsRecViewAdapter adapter = new SlotsRecViewAdapter();
+                        adapter.setSlots(vaccineSlotModels);
+
                         distSearchLayout.setVisibility(view.GONE);
                         progress.setVisibility(view.GONE);
-                        lv_slots.setVisibility(view.VISIBLE);
+
+                        rv_slots.setAdapter(adapter);
+                        rv_slots.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+                        rv_slots.setVisibility(view.VISIBLE);
+                        pinSearchLayout.setVisibility(view.GONE);
+
+
                     }
                 });
             }
