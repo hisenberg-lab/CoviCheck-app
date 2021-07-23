@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.graphics.Color;
-import android.media.audiofx.AudioEffect;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +15,7 @@ import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.MPPointF;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,9 +31,6 @@ public class CasesActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private PieChart pieChart;
-    int active,confirmed,death;
-    int recovered;
-
 
 
 
@@ -58,12 +55,12 @@ public class CasesActivity extends AppCompatActivity {
 
 
 
-
         updateData();
         initPieChart();
-        showPieChart();
+//        showPieChart();
 
-//  pull dowm to refresh
+
+//  pull down to refresh
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -75,9 +72,10 @@ public class CasesActivity extends AppCompatActivity {
                 textView_death_new.setText("+0");
                 textView_recovered.setText("0");
                 textView_recovered_new.setText("+0");
-                initPieChart();
+
                 updateData();
-                showPieChart();
+                initPieChart();
+//                showPieChart();
                 swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(CasesActivity.this, "Refreshed", Toast.LENGTH_SHORT).show();
             }
@@ -102,11 +100,11 @@ public class CasesActivity extends AppCompatActivity {
                 textView_death_new.setText("+"+statewiseModel.getDeltadeaths());
                 textView_recovered.setText(statewiseModel.getRecovered());
                 textView_recovered_new.setText("+"+statewiseModel.getDeltarecovered());
-
-                active = Integer.valueOf(statewiseModel.getActive());
-                confirmed = Integer.valueOf(statewiseModel.getConfirmed());
-                death = Integer.valueOf(statewiseModel.getDeaths());
-                recovered = Integer.valueOf(statewiseModel.getRecovered());
+//
+//                active = Integer.valueOf(statewiseModel.getActive());
+//                confirmed = Integer.valueOf(statewiseModel.getConfirmed());
+//                death = Integer.valueOf(statewiseModel.getDeaths());
+//                recovered = Integer.valueOf(statewiseModel.getRecovered());
 
                 Date mDate = null;
                 try {
@@ -116,11 +114,15 @@ public class CasesActivity extends AppCompatActivity {
                 }
                 String dateFormat = new SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.US).format(mDate);
                 textview_time.setText(dateFormat);
+
+                showPieChart(Integer.valueOf(statewiseModel.getActive()),Integer.valueOf(statewiseModel.getConfirmed()),Integer.valueOf(statewiseModel.getDeaths()));
             }
         });
+
+
     }
 
-    private void showPieChart(){
+    private void showPieChart(int active, int confirmed, int death){
 
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
         String label = "Cases";
@@ -159,18 +161,27 @@ public class CasesActivity extends AppCompatActivity {
         pieDataSet.setValueTextSize(12f);
         //providing color list for coloring different entries
         pieDataSet.setColors(colors);
+
         //grouping the data set from entry to chart
         PieData pieData = new PieData(pieDataSet);
         //showing the value of the entries, default true if not set
         pieData.setDrawValues(true);
 
+        pieData.setValueFormatter(new PercentFormatter());
+
+        pieData.setValueTextColor(Color.WHITE);
+
+        pieChart.getLegend().setTextColor(Color.WHITE);
         pieChart.setData(pieData);
         pieChart.invalidate();
+        pieData.notifyDataChanged();
+        pieChart.notifyDataSetChanged();
     }
 
     private void initPieChart() {
         //using percentage as values instead of amount
         pieChart.setUsePercentValues(true);
+
 
         //remove the description label on the lower left corner, default true if not set
         pieChart.getDescription().setEnabled(false);
@@ -186,10 +197,14 @@ public class CasesActivity extends AppCompatActivity {
         //highlight the entry when it is tapped, default true if not set
         pieChart.setHighlightPerTapEnabled(true);
         //adding animation so the entries pop up from 0 degree
-        pieChart.animateY(1400, Easing.EasingOption.EaseOutBounce);
+        pieChart.animateY(1400, Easing.EasingOption.EaseOutSine);
 //        pieChart.animateX(1400, Easing.EasingOption.EaseOutBounce);
 
         //setting the color of the hole in the middle, default white
         pieChart.setHoleColor(Color.parseColor("#FE1D1D2F"));
+
+        pieChart.getLegend().setTextColor(R.color.white);
+
+
     }
 }
