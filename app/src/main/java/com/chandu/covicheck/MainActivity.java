@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.icu.text.TimeZoneFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -32,15 +36,20 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static com.android.volley.Request.Method.*;
 
@@ -56,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rv_slots;
     private ProgressBar progress;
 //    TextView noVaccine;
+    private FloatingActionButton alert, calender, cases;
+    private ExtendedFloatingActionButton addFab;
+    private Boolean isAllFabsVisible;
+
+    String formattedDate;
 
     ArrayList<StateDistModel> stateModelArrayList = new ArrayList<StateDistModel>();
     ArrayList<String> stateNames = new ArrayList<String>();
@@ -91,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
         progress = findViewById(R.id.progress);
 //        noVaccine = findViewById(R.id.noVaccine);
 
+        addFab = findViewById(R.id.fab);
+
+        alert = findViewById(R.id.alert);
+        calender = findViewById(R.id.calender);
+        cases = findViewById(R.id.cases);
+
+        isAllFabsVisible=false;
+
+
         if(getSupportActionBar()!= null) {
             getSupportActionBar().hide();
         }
@@ -98,10 +121,35 @@ public class MainActivity extends AppCompatActivity {
 
 
 //get current date
-        Date date = Calendar.getInstance().getTime();
+        Date date;
+        date = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDate = df.format(date);
+        formattedDate = df.format(date);
         Log.d(TAG,formattedDate);
+
+        final Calendar myCalender = Calendar.getInstance();
+
+        DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                myCalender.set(Calendar.YEAR, i);
+                myCalender.set(Calendar.MONTH, i1);
+                myCalender.set(Calendar.DAY_OF_MONTH, i2);
+
+//                Toast.makeText(MainActivity.this, df.format(myCalender.getTime()), Toast.LENGTH_SHORT).show();
+                formattedDate = df.format((myCalender.getTime()));
+            }
+        };
+
+        calender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.hide();
+                cases.hide();
+                calender.hide();
+                new DatePickerDialog(MainActivity.this,date2,myCalender.get(Calendar.YEAR),myCalender.get(Calendar.MONTH),myCalender.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
 //populate spinner 1
         VaccineDataService vaccineDataService = new VaccineDataService(MainActivity.this);
@@ -111,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
         pinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alert.hide();
+                cases.hide();
+                calender.hide();
                 rv_slots.setVisibility(view.GONE);
                 pinBtn.setAlpha(0.7f);
                 distBtn.setAlpha(1.0f);
@@ -122,6 +173,9 @@ public class MainActivity extends AppCompatActivity {
         distBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alert.hide();
+                cases.hide();
+                calender.hide();
                 rv_slots.setVisibility(view.GONE);
                 distBtn.setAlpha(0.7f);
                 pinBtn.setAlpha(1.0f);
@@ -231,6 +285,48 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        addFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isAllFabsVisible){
+                    alert.show();
+                    calender.show();
+                    cases.show();
+
+                    isAllFabsVisible=true;
+                }
+                else{
+                    alert.hide();
+                    cases.hide();
+                    calender.hide();
+
+                    isAllFabsVisible=false;
+                }
+            }
+        });
+
+        cases.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.hide();
+                cases.hide();
+                calender.hide();
+                startActivity(new Intent(MainActivity.this,CasesActivity.class));
+            }
+        });
+
+        alert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.hide();
+                cases.hide();
+                calender.hide();
+                startActivity(new Intent(MainActivity.this,AlertActivity.class));
+            }
+        });
+
+
 
     }
+
 }

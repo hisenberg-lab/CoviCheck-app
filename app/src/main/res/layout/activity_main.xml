@@ -22,16 +22,17 @@
         app:layout_constraintVertical_bias="0.025" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="25sp"
+        android:layout_marginRight="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="25sp"
-        android:layout_marginRight="25sp"
         app:layout_constraintTop_toBottomOf="@+id/checkVacci"
-        android:layout_centerHorizontal="true"
         app:layout_constraintVertical_bias="0.011">
 
         <com.google.android.material.button.MaterialButton
@@ -108,9 +109,12 @@
             android:layout_marginEnd="145dp"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/pink_a200"
             android:ems="10"
             android:hint="Enter your State"
-            android:inputType="number" />
+            android:inputType="number"
+            android:popupBackground="@color/pink_a700"
+            android:splitMotionEvents="false" />
 
         <Spinner
             android:id="@+id/distSearch2"
@@ -121,6 +125,8 @@
             android:layout_marginEnd="143dp"
             android:layout_marginBottom="15dp"
             android:layout_weight="1"
+            android:backgroundTint="@color/teal_200"
+            android:popupBackground="@color/teal_700"
             android:ems="10"
             android:hint="Enter your District"
             android:inputType="number" />
@@ -144,7 +150,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="192dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_centerHorizontal="true"
         app:layout_constraintTop_toBottomOf="@+id/checkVacci"
         tools:layout_editor_absoluteX="16dp">
@@ -178,5 +184,51 @@
 <!--        app:layout_constraintEnd_toEndOf="parent"-->
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toBottomOf="@+id/checkVacci" />-->
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20sp"
+        app:icon="@drawable/ic_add"
+        android:layout_marginBottom="20sp"
+        android:id="@+id/fab"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/calender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:visibility="gone"
+        app:fabSize="mini"
+        app:icon="@drawable/ic_alert"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fab" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cases"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/fab"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone"
+        app:icon="@drawable/ic_calender"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/calender"
+        app:layout_constraintEnd_toStartOf="@+id/cases" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
