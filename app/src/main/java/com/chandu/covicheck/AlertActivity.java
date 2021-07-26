@@ -15,11 +15,13 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class AlertActivity extends AppCompatActivity {
 
-    Button addAlert;
+    private Button addAlert;
+    private RadioGroup ageRadio, feeRadio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +29,18 @@ public class AlertActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alert);
         createNotificationChannel();
 
-
+        feeRadio = findViewById(R.id.feeRadio);
+        ageRadio = findViewById(R.id.ageRadio);
         addAlert= findViewById(R.id.alertPin);
 
         addAlert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(feeRadio.getCheckedRadioButtonId() == -1 & ageRadio.getCheckedRadioButtonId() == -1){
+                    Toast.makeText(AlertActivity.this, "Option not selected", Toast.LENGTH_SHORT).show();
+                }
+
                 Toast.makeText(AlertActivity.this, "Alert set", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(AlertActivity.this, ReminderBroadcast.class);
