@@ -313,16 +313,19 @@ public class VaccineDataService {
 
         List<VaccineSlotModel> slots = new ArrayList<>();
 
-        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=" + pinSearch + "&date=" + formattedDate;
+        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode" + pinSearch + "&date=" + formattedDate;
 
         JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 //                Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
                 try {
-                    JSONArray sessions_list = response.getJSONArray("sessions");
+                    JSONArray sessions_list = response.getJSONArray("centers");
 
                     JSONObject single_center_from_api;
+
+                    JSONArray sessions;
+                    JSONObject sessionsObj;
                     for(int i=0; i < sessions_list.length(); i++) {
 
                         single_center_from_api = (JSONObject) sessions_list.get(i);
@@ -340,24 +343,28 @@ public class VaccineDataService {
                         single_center.setLat(Integer.parseInt(single_center_from_api.getString("lat")));
                         single_center.setLongi(Integer.parseInt(single_center_from_api.getString("long")));
                         single_center.setFee_type(single_center_from_api.getString("fee_type"));
-                        single_center.setSession_id(single_center_from_api.getString("session_id"));
-                        single_center.setDate(single_center_from_api.getString("date"));
-                        single_center.setAvailable_capacity(Integer.parseInt(single_center_from_api.getString("available_capacity")));
-                        single_center.setAvailable_capacity_dose1(Integer.parseInt(single_center_from_api.getString("available_capacity_dose1")));
-                        single_center.setAvailable_capacity_dose2(Integer.parseInt(single_center_from_api.getString("available_capacity_dose2")));
-                        if(!single_center_from_api.isNull("fee")) {
-                            single_center.setFee(single_center_from_api.getString("fee"));
+
+                        sessions = single_center_from_api.getJSONArray("sessions");
+                        sessionsObj = (JSONObject) sessions.get(0);
+
+                        single_center.setSession_id(sessionsObj.getString("session_id"));
+                        single_center.setDate(sessionsObj.getString("date"));
+                        single_center.setAvailable_capacity(Integer.parseInt(sessionsObj.getString("available_capacity")));
+                        single_center.setAvailable_capacity_dose1(Integer.parseInt(sessionsObj.getString("available_capacity_dose1")));
+                        single_center.setAvailable_capacity_dose2(Integer.parseInt(sessionsObj.getString("available_capacity_dose2")));
+                        if(!sessionsObj.isNull("fee")) {
+                            single_center.setFee(sessionsObj.getString("fee"));
                         }
-                        if(!single_center_from_api.isNull("min_age_limit")) {
-                            single_center.setMin_age_limit(Integer.parseInt(single_center_from_api.getString("min_age_limit")));
+                        if(!sessionsObj.isNull("min_age_limit")) {
+                            single_center.setMin_age_limit(Integer.parseInt(sessionsObj.getString("min_age_limit")));
                         }
-                        if(!single_center_from_api.isNull("max_age_limit")){
-                            single_center.setMax_age_limit(Integer.parseInt(single_center_from_api.getString("max_age_limit")));
+                        if(!sessionsObj.isNull("max_age_limit")){
+                            single_center.setMax_age_limit(Integer.parseInt(sessionsObj.getString("max_age_limit")));
                         }
-                        if(!single_center_from_api.isNull("allow_all_age")) {
-                            single_center.setAllow_all_age(single_center_from_api.getString("allow_all_age"));
+                        if(!sessionsObj.isNull("allow_all_age")) {
+                            single_center.setAllow_all_age(sessionsObj.getString("allow_all_age"));
                         }
-                        single_center.setVaccine(single_center_from_api.getString("vaccine"));
+                        single_center.setVaccine(sessionsObj.getString("vaccine"));
 //                    if(!single_center_from_api.isNull("slot")) {
 //                        first_center.setSlots(single_center_from_api.getJSONObject("slots"));
 //                      }
