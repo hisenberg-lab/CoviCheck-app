@@ -29,6 +29,8 @@ public class VaccineDataService {
         this.context = context;
     }
 
+    public  VaccineDataService(){}
+
 
     public interface VaccineByPIN {
         void onError(String message);
