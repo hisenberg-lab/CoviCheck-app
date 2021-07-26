@@ -306,7 +306,7 @@ public class VaccineDataService {
 
         void onResponse(List<VaccineSlotModel> vaccineSlotModels);
     }
-    public void getAlertByPIn(String pinSearch, String formattedDate, VaccineDataService.AlertByPIN alertByPIN) {
+    public void getAlertByPIn(String pinSearch, String formattedDate,String fee,int age, VaccineDataService.AlertByPIN alertByPIN) {
 
         // Instantiate the RequestQueue.
 //                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
@@ -325,10 +325,25 @@ public class VaccineDataService {
                     JSONObject single_center_from_api;
 
                     JSONArray sessions;
-                    JSONObject sessionsObj;
+
                     for(int i=0; i < sessions_list.length(); i++) {
 
                         single_center_from_api = (JSONObject) sessions_list.get(i);
+                        sessions = single_center_from_api.getJSONArray("sessions");
+                        for(int j=0; j<sessions.length();j++){
+                            JSONObject sessionsObj = (JSONObject) sessions.get(j);
+
+                            if(Integer.valueOf(sessionsObj.getString("available_capacity")) == 0){
+                                continue;
+                            }
+                            if(!single_center_from_api.getString("fee_type").toUpperCase().equals(fee)){
+                                continue;
+                            }
+                            if(age < Integer.valueOf(sessionsObj.getString("min_age_limit"))){
+                                continue;
+                            }
+
+
                         VaccineSlotModel single_center = new VaccineSlotModel();
 
                         single_center.setCenter_id(Integer.parseInt(single_center_from_api.getString("center_id")));
@@ -344,8 +359,7 @@ public class VaccineDataService {
                         single_center.setLongi(Integer.parseInt(single_center_from_api.getString("long")));
                         single_center.setFee_type(single_center_from_api.getString("fee_type"));
 
-                        sessions = single_center_from_api.getJSONArray("sessions");
-                        sessionsObj = (JSONObject) sessions.get(0);
+
 
                         single_center.setSession_id(sessionsObj.getString("session_id"));
                         single_center.setDate(sessionsObj.getString("date"));
@@ -371,6 +385,9 @@ public class VaccineDataService {
 
                         slots.add(single_center);
                     }
+
+                    }
+
 
 
                     alertByPIN.onResponse(slots);

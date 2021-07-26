@@ -13,8 +13,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ public class AlertActivity extends AppCompatActivity {
 
     private Button addAlert;
     private RadioGroup ageRadio, feeRadio;
+    private RadioButton age, fee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +40,25 @@ public class AlertActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(feeRadio.getCheckedRadioButtonId() == -1 & ageRadio.getCheckedRadioButtonId() == -1){
+                if(feeRadio.getCheckedRadioButtonId() == -1 || ageRadio.getCheckedRadioButtonId() == -1){
                     Toast.makeText(AlertActivity.this, "Option not selected", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 Toast.makeText(AlertActivity.this, "Alert set", Toast.LENGTH_SHORT).show();
 
+//                Log.d("AlertActivity", String.valueOf(feeRadio.getCheckedRadioButtonId()));
+                age = findViewById(ageRadio.getCheckedRadioButtonId());
+                fee = findViewById(feeRadio.getCheckedRadioButtonId());
+
+                Bundle bundle = new Bundle();
+                bundle.putString("fee", String.valueOf(fee.getText()));
+                bundle.putString("age", String.valueOf(age.getText()));
+
+
                 Intent intent = new Intent(AlertActivity.this, ReminderBroadcast.class);
+                intent.putExtras(bundle);
+
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(AlertActivity.this,0,intent,0);
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);

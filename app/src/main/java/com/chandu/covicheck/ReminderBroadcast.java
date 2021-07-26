@@ -12,9 +12,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
+
 public class ReminderBroadcast extends BroadcastReceiver {
+    private String fee,age;
+    private int ageInt;
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -25,8 +29,16 @@ public class ReminderBroadcast extends BroadcastReceiver {
                 .setContentText("Vaccine is available...")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
+        fee = intent.getStringExtra("fee");
+        age = intent.getStringExtra("age");
+        if(age.equals( "18-44")){
+            ageInt = 18;
+        }else{
+            ageInt=45;
+        }
+
         VaccineDataService vaccineDataService = new VaccineDataService(context);
-        vaccineDataService.getAlertByPIn("560083", "08-07-2021", new VaccineDataService.AlertByPIN(){
+        vaccineDataService.getAlertByPIn("560076", "27-07-2021","PAID", 18, new VaccineDataService.AlertByPIN(){
             @Override
             public void onError(String message) {
                 Log.d("AlertActivity","Something is wrong");
@@ -34,6 +46,8 @@ public class ReminderBroadcast extends BroadcastReceiver {
 
             @Override
             public void onResponse(List<VaccineSlotModel> vaccineSlotModels) {
+
+
 
                 if(!vaccineSlotModels.isEmpty())
                 {
@@ -48,6 +62,11 @@ public class ReminderBroadcast extends BroadcastReceiver {
 
 
     }
+
+//    public void filterCenters(List<VaccineSlotModel> vaccineSlotModels,String age, String fee){
+//        List<VaccineSlotModel> alertSpecific = ArrayList<>();
+//        for
+//    }
 
     public void cancelAlarm(Context context) {
         Intent intent = new Intent(context, ReminderBroadcast.class);
