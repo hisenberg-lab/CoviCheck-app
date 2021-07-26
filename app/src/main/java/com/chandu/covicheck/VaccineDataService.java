@@ -313,7 +313,7 @@ public class VaccineDataService {
 
         List<VaccineSlotModel> slots = new ArrayList<>();
 
-        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode" + pinSearch + "&date=" + formattedDate;
+        String url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pinSearch + "&date=" + formattedDate;
 
         JsonObjectRequest request = new JsonObjectRequest(GET, url, null, new Response.Listener<JSONObject>() {
             @Override

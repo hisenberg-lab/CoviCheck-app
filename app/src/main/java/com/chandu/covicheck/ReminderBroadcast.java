@@ -1,5 +1,7 @@
 package com.chandu.covicheck;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,13 +38,22 @@ public class ReminderBroadcast extends BroadcastReceiver {
                 if(!vaccineSlotModels.isEmpty())
                 {
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
                     notificationManager.notify(200, builder.build());
+
+                    cancelAlarm(context);
                 }
             }
         });
 
 
 
+    }
+
+    public void cancelAlarm(Context context) {
+        Intent intent = new Intent(context, ReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,intent,0);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 }
