@@ -205,6 +205,7 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/pink_a700"
         app:rippleColor="@color/purple_200"
+        android:visibility="gone"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/fab"
@@ -219,6 +220,7 @@
         android:backgroundTint="@color/pink_a700"
         app:fabSize="mini"
         app:layout_constraintBottom_toTopOf="@+id/fab"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@color/purple_200"
         app:srcCompat="@drawable/ic_baseline_masks_24" />
@@ -232,6 +234,7 @@
         app:srcCompat="@drawable/ic_baseline_add_alert_24"
         app:fabSize="mini"
         android:backgroundTint="@color/pink_a700"
+        android:visibility="gone"
         app:rippleColor="@color/purple_200"
         app:layout_constraintBottom_toTopOf="@+id/calender"
         app:layout_constraintEnd_toStartOf="@+id/cases" />
