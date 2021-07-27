@@ -1,5 +1,8 @@
 package com.chandu.covicheck;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONObject;
 
 import java.util.List;
@@ -258,4 +261,5 @@ public class VaccineSlotModel {
     public void setSlots(List<String> slots) {
         this.slots = slots;
     }
+
 }

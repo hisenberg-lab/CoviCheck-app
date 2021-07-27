@@ -78,11 +78,12 @@
 
         </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/relativeVaccine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:layout_marginRight="80sp"
         android:layout_marginBottom="2sp"
         android:layout_below="@+id/relativeAddress">
@@ -132,7 +133,7 @@
                 android:text="D2" />
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/age"
