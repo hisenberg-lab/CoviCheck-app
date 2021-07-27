@@ -93,20 +93,23 @@
         android:id="@+id/alertLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:gravity="center">
 
         <TextView
-            android:layout_width="250sp"
+            android:layout_width="260sp"
             android:layout_height="wrap_content"
             android:id="@+id/savedAlert"
+            android:textColor="@color/white"
             android:text=""
-            android:layout_marginRight="10sp"></TextView>
+            android:layout_marginRight="5sp"></TextView>
 
         <Button
             android:id="@+id/deleteButton"
-            android:layout_width="50sp"
+            android:layout_width="40sp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:backgroundTint="@color/redBackground"
             app:icon="@drawable/ic_baseline_delete_24"
             app:iconTint="@color/white">
 

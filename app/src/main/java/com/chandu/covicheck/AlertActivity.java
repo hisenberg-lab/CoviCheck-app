@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -32,13 +33,14 @@ import java.util.List;
 
 public class AlertActivity extends AppCompatActivity {
 
-    private Button addAlert;
+    private Button addAlert,deleteButton;
     private RadioGroup ageRadio, feeRadio;
     private RadioButton age, fee;
     private RecyclerView alertList;
     private String alertFormattedDate;
     private Date alertDate;
-    private TextView alertSearch;
+    private TextView alertSearch,savedAlert;
+    private LinearLayout alertLinear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,9 @@ public class AlertActivity extends AppCompatActivity {
         addAlert= findViewById(R.id.alertPin);
         alertList = findViewById(R.id.alertList);
         alertSearch = findViewById(R.id.alertSearch);
+        savedAlert = findViewById(R.id.savedAlert);
+        deleteButton = findViewById(R.id.deleteButton);
+        alertLinear = findViewById(R.id.alertLinear);
 
         alertDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -83,6 +88,8 @@ public class AlertActivity extends AppCompatActivity {
                 }
             });
 
+            alertLinear.setVisibility(View.VISIBLE);
+            savedAlert.setText("PIN: "+shPin+", Fee Type: "+shFee+", Min age: "+shAge);
         }
 
 
@@ -131,6 +138,21 @@ public class AlertActivity extends AppCompatActivity {
                 long tenSecondsInMillis = 1000*10;
 
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeAtButtonClick, tenSecondsInMillis, pendingIntent);
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.clear();
+                myEdit.commit();
+
+                savedAlert.setText("");
+                alertLinear.setVisibility(view.GONE);
+                ReminderBroadcast reminderBroadcast = new ReminderBroadcast();
+                reminderBroadcast.cancelAlarm(AlertActivity.this);
             }
         });
     }
