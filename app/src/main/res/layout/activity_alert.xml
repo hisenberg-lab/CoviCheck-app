@@ -35,58 +35,83 @@
             android:layout_weight="0.7"
             android:text="Add Alert" />
     </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:gravity="center">
-    <RadioGroup
-        android:id="@+id/feeRadio"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
 
-        <com.google.android.material.radiobutton.MaterialRadioButton
+        <RadioGroup
+            android:id="@+id/feeRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/free"
-            android:text="FREE">
+            android:orientation="horizontal">
 
-        </com.google.android.material.radiobutton.MaterialRadioButton>
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/free"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FREE">
 
-        <com.google.android.material.radiobutton.MaterialRadioButton
+            </com.google.android.material.radiobutton.MaterialRadioButton>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/paid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PAID">
+
+            </com.google.android.material.radiobutton.MaterialRadioButton>
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/ageRadio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/paid"
-            android:text="PAID">
+            android:layout_marginLeft="25sp"
+            android:orientation="horizontal">
 
-        </com.google.android.material.radiobutton.MaterialRadioButton>
-    </RadioGroup>
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/eighteen44"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18-44">
 
-    <RadioGroup
-        android:id="@+id/ageRadio"
-        android:layout_width="wrap_content"
+            </com.google.android.material.radiobutton.MaterialRadioButton>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/fourtyFive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="45 &amp; Above">
+
+            </com.google.android.material.radiobutton.MaterialRadioButton>
+        </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/alertLinear"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25sp"
-        android:orientation="horizontal">
+        android:gravity="center">
 
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="250sp"
             android:layout_height="wrap_content"
-            android:id="@+id/eighteen44"
-            android:text="18-44">
+            android:id="@+id/savedAlert"
+            android:text=""
+            android:layout_marginRight="10sp"></TextView>
 
-        </com.google.android.material.radiobutton.MaterialRadioButton>
-
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="50sp"
             android:layout_height="wrap_content"
-            android:id="@+id/fourtyFive"
-            android:text="45 &amp; Above">
+            android:textAlignment="center"
+            app:icon="@drawable/ic_baseline_delete_24"
+            app:iconTint="@color/white">
 
-        </com.google.android.material.radiobutton.MaterialRadioButton>
-    </RadioGroup>
-</LinearLayout>
+        </Button>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/alertList"
