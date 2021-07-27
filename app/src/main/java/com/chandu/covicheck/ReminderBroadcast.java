@@ -24,14 +24,16 @@ import java.util.List;
 
 
 public class ReminderBroadcast extends BroadcastReceiver {
-    private String fee,age;
-    private int ageInt;
-    private ListView alertList;
 
-    private String alertFormattedDate;
-    private Date alertDate;
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        String fee,age;
+        int ageInt;
+        ListView alertList;
+
+        String alertFormattedDate;
+        Date alertDate;
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyAlert")
                 .setSmallIcon(R.drawable.ic_alert)
@@ -44,7 +46,7 @@ public class ReminderBroadcast extends BroadcastReceiver {
 
         builder.setContentIntent(contentIntent);
 
-
+        Log.d("AlertActivity","inside broadcast reciever");
         alertDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         alertFormattedDate = df.format(alertDate);
@@ -68,16 +70,11 @@ public class ReminderBroadcast extends BroadcastReceiver {
 
                 if(!vaccineSlotModels.isEmpty())
                 {
-//                    ArrayAdapter arrayAdapter = new ArrayAdapter(context, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
-//                    Bundle alertBundle = new Bundle();
-//                    alertBundle.putString("pin","560076");
-//                    alertBundle.putString("fee","PAID");
-//                    alertBundle.putInt("age",18);
 
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                     notificationManager.notify(200, builder.build());
 
-                    cancelAlarm(context);
+//                    cancelAlarm(context);
                 }
             }
         });

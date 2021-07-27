@@ -33,6 +33,10 @@ public class SlotsRecViewAdapter extends RecyclerView.Adapter<SlotsRecViewAdapte
         holder.date.setText(slots.get(position).getDate());
         holder.feeType.setText(slots.get(position).getFee_type());
         holder.fee.setText("Rs "+slots.get(position).getFee()+"/-");
+        if(slots.get(position).getFee() == null){
+            holder.fee.setText("");
+
+        }
         holder.vaccine.setText(slots.get(position).getVaccine());
         holder.doseOne.setText("D1 "+String.valueOf(slots.get(position).getAvailable_capacity_dose1()));
         holder.doseTwo.setText("D2 "+String.valueOf(slots.get(position).getAvailable_capacity_dose2()));
