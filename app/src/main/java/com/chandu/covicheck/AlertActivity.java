@@ -104,14 +104,16 @@ public class AlertActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 if(feeRadio.getCheckedRadioButtonId() == -1 || ageRadio.getCheckedRadioButtonId() == -1 || (addAlert.getText().equals(""))){
                     Toast.makeText(AlertActivity.this, "Option not selected", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
-                InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
 
                 Toast.makeText(AlertActivity.this, "Alert set", Toast.LENGTH_SHORT).show();
 
