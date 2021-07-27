@@ -1,6 +1,7 @@
 package com.chandu.covicheck;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -15,16 +16,27 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class AlertActivity extends AppCompatActivity {
 
     private Button addAlert;
     private RadioGroup ageRadio, feeRadio;
     private RadioButton age, fee;
+    private ListView alertList;
+    private String alertFormattedDate;
+    private Date alertDate;
+    private TextView alertSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +47,42 @@ public class AlertActivity extends AppCompatActivity {
         feeRadio = findViewById(R.id.feeRadio);
         ageRadio = findViewById(R.id.ageRadio);
         addAlert= findViewById(R.id.alertPin);
+        alertList = findViewById(R.id.alertList);
+        alertSearch = findViewById(R.id.alertSearch);
+
+        alertDate = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        alertFormattedDate = df.format(alertDate);
+
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        String shFee = sh.getString("fee","");
+        int shAge = sh.getInt("age",0);
+        String shPin = sh.getString("pin","");
+
+
+
+
+        if( shAge != 0){
+            VaccineDataService vaccineDataService = new VaccineDataService(AlertActivity.this);
+            vaccineDataService.getAlertByPIn(shPin, alertFormattedDate,shFee, shAge, new VaccineDataService.AlertByPIN(){
+                @Override
+                public void onError(String message) {
+                    Log.d("AlertActivity","Something is wrong");
+                }
+
+                @Override
+                public void onResponse(List<VaccineSlotModel> vaccineSlotModels) {
+
+                    ArrayAdapter arrayAdapter = new ArrayAdapter(AlertActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
+                    alertList.setAdapter(arrayAdapter);
+
+
+                }
+            });
+
+        }
+
+
 
         addAlert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,19 +93,31 @@ public class AlertActivity extends AppCompatActivity {
                     return;
                 }
 
+
+
                 Toast.makeText(AlertActivity.this, "Alert set", Toast.LENGTH_SHORT).show();
 
 //                Log.d("AlertActivity", String.valueOf(feeRadio.getCheckedRadioButtonId()));
                 age = findViewById(ageRadio.getCheckedRadioButtonId());
                 fee = findViewById(feeRadio.getCheckedRadioButtonId());
 
-                Bundle bundle = new Bundle();
-                bundle.putString("fee", String.valueOf(fee.getText()));
-                bundle.putString("age", String.valueOf(age.getText()));
 
+                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                int ageInt;
+                if(age.getText().equals( "18-44")){
+                    ageInt = 18;
+                }else{
+                    ageInt=45;
+                }
+
+                myEdit.putString("fee", String.valueOf(fee.getText()));
+                myEdit.putInt("age",ageInt);
+                myEdit.putString("pin", String.valueOf(alertSearch.getText()));
+
+                myEdit.commit();
 
                 Intent intent = new Intent(AlertActivity.this, ReminderBroadcast.class);
-                intent.putExtras(bundle);
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(AlertActivity.this,0,intent,0);
 
@@ -71,6 +131,8 @@ public class AlertActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void createNotificationChannel() {
 
