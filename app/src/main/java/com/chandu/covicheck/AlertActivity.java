@@ -2,6 +2,8 @@ package com.chandu.covicheck;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -33,7 +35,7 @@ public class AlertActivity extends AppCompatActivity {
     private Button addAlert;
     private RadioGroup ageRadio, feeRadio;
     private RadioButton age, fee;
-    private ListView alertList;
+    private RecyclerView alertList;
     private String alertFormattedDate;
     private Date alertDate;
     private TextView alertSearch;
@@ -73,9 +75,10 @@ public class AlertActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(List<VaccineSlotModel> vaccineSlotModels) {
 
-                    ArrayAdapter arrayAdapter = new ArrayAdapter(AlertActivity.this, android.R.layout.simple_list_item_activated_1, vaccineSlotModels);
-                    alertList.setAdapter(arrayAdapter);
-
+                    SlotsRecViewAdapter alertAdapter = new SlotsRecViewAdapter();
+                    alertAdapter.setSlots(vaccineSlotModels);
+                    alertList.setAdapter(alertAdapter);
+                    alertList.setLayoutManager(new LinearLayoutManager(AlertActivity.this));
 
                 }
             });
