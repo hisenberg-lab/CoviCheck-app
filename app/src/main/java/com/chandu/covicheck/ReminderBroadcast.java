@@ -36,7 +36,7 @@ public class ReminderBroadcast extends BroadcastReceiver {
         Date alertDate;
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyAlert")
-                .setSmallIcon(R.drawable.ic_alert)
+                .setSmallIcon(R.drawable.ic_baseline_add_alert_24)
                 .setContentTitle("Time to get your JAB")
                 .setContentText("Vaccine is available...")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
