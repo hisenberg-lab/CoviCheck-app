@@ -18,10 +18,12 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -41,6 +43,7 @@ public class AlertActivity extends AppCompatActivity {
     private Date alertDate;
     private TextView alertSearch,savedAlert;
     private LinearLayout alertLinear;
+    private ProgressBar progressAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class AlertActivity extends AppCompatActivity {
         savedAlert = findViewById(R.id.savedAlert);
         deleteButton = findViewById(R.id.deleteButton);
         alertLinear = findViewById(R.id.alertLinear);
+        progressAlert = findViewById(R.id.progressAlert);
 
         alertDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -70,6 +74,7 @@ public class AlertActivity extends AppCompatActivity {
 
 
         if( shAge != 0){
+            progressAlert.setVisibility(View.VISIBLE);
             VaccineDataService vaccineDataService = new VaccineDataService(AlertActivity.this);
             vaccineDataService.getAlertByPIn(shPin, alertFormattedDate,shFee, shAge, new VaccineDataService.AlertByPIN(){
                 @Override
@@ -89,6 +94,7 @@ public class AlertActivity extends AppCompatActivity {
             });
 
             alertLinear.setVisibility(View.VISIBLE);
+            progressAlert.setVisibility(View.GONE);
             savedAlert.setText("PIN: "+shPin+", Fee Type: "+shFee+", Min age: "+shAge);
         }
 
@@ -98,12 +104,14 @@ public class AlertActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(feeRadio.getCheckedRadioButtonId() == -1 || ageRadio.getCheckedRadioButtonId() == -1){
+                if(feeRadio.getCheckedRadioButtonId() == -1 || ageRadio.getCheckedRadioButtonId() == -1 || (addAlert.getText().equals(""))){
                     Toast.makeText(AlertActivity.this, "Option not selected", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
+                InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
                 Toast.makeText(AlertActivity.this, "Alert set", Toast.LENGTH_SHORT).show();
 

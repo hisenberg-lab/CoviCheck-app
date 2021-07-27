@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     tools:context=".AlertActivity">
 
     <LinearLayout
@@ -120,8 +121,16 @@
         android:id="@+id/alertList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_centerHorizontal="true"
         app:layout_constraintTop_toBottomOf="@+id/linearPin" />
-
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/purple_700"
+        app:indicatorSize="200dp"
+        tools:ignore="MissingConstraints" />
 
 </LinearLayout>
