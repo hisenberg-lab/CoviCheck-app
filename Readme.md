@@ -6,3 +6,4 @@ Swipe down on the screen to refresh the data.
 
 ## Screen Shots
 
+<img src="https://github.com/hisenberg-lab/CoviCheck-app/blob/main/1.png" width="300"> <img src="https://github.com/hisenberg-lab/CoviCheck-app/blob/main/2.png" width="300"> <img src="https://github.com/hisenberg-lab/CoviCheck-app/blob/main/3.png" width="300"> <img src="https://github.com/hisenberg-lab/CoviCheck-app/blob/main/4.png" width="300"> <img src="https://github.com/hisenberg-lab/CoviCheck-app/blob/main/5.png" width="300"> <img src="https://github.com/hisenberg-lab/CoviCheck-app/blob/main/6.png" width="300">
